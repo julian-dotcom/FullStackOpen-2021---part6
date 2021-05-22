@@ -29,18 +29,22 @@ const notificationReducer = (state = {notification: '', visible: false}, action)
 //         visible: false
 //     }
 // }
-
+let timer = undefined // define timer so that we can check if it has been initialized by the setTimeout funciton
 export const setNotification = (notification, time) => {
-    console.log(time)
     return async dispatch => {
+        if (timer !== undefined) {
+            console.log(timer)
+            window.clearTimeout(timer)
+        }
+
         dispatch({
             type: 'NOTIFICATION',
             notification: notification
         })
-        setTimeout(() => dispatch({
-            type: 'NOTIFICATION',
-            notification: ''
-        }), time)
+        timer = await window.setTimeout(() => dispatch({
+                type: 'NOTIFICATION',
+                notification: ''
+            }), time)
     }
 }
 
